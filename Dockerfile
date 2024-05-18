@@ -3,9 +3,9 @@ LABEL auto_prune="true"
 
 WORKDIR /build
 COPY . .
+
 RUN go mod download
 RUN go build -o server .
-
 
 FROM docker.io/library/alpine:3.19
 
