@@ -23,21 +23,27 @@ func main() {
 		if err != nil {
 			log.Fatalln("Error while accepting connection:", err)
 		}
-		remote := "[" + c.RemoteAddr().String() + "]"
-		log.Println(remote, "Accepted connection")
-
-		buf, err := io.ReadAll(c)
-		if err != nil {
-			log.Fatalln(remote, "Error while reading connection:", err)
-		}
-		log.Println(remote, "Read:", string(buf))
-
-		_, err = c.Write(buf)
-		if err != nil {
-			log.Fatalln(remote, "Error while writing connection:", err)
-		}
-
-		c.Close()
-		log.Println(remote, "Closed connection")
+		go handleConn(c)
 	}
+}
+
+func handleConn(c net.Conn) {
+	defer c.Close()
+
+	remote := "[" + c.RemoteAddr().String() + "]"
+	log.Println(remote, "Accepted connection")
+
+	buf, err := io.ReadAll(c)
+	if err != nil {
+		log.Fatalln(remote, "Error while reading connection:", err)
+	}
+	log.Println(remote, "Read:", string(buf))
+
+	_, err = c.Write(buf)
+	if err != nil {
+		log.Fatalln(remote, "Error while writing connection:", err)
+	}
+	log.Println(remote, "Echoed back")
+
+	log.Println(remote, "Closing connection")
 }
