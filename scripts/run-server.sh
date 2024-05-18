@@ -56,12 +56,12 @@ if [[ -z "${problem-}" ]]; then
     usage
 fi
 
-problem_dir="$(realpath "$script_dir/../problems/$problem")"
-
+problem_dir="$script_dir/../problems/$problem"
 if [[ ! -d "$problem_dir" ]]; then
-    echo "Challenge directory does not exist: $problem_dir" >&2
+    echo "Problem directory does not exist: $problem_dir" >&2
     exit 1
 fi
+problem_dir="$(realpath "$problem_dir")"
 
 if [[ -z "$port" ]]; then
     echo "port is not set" >&2
