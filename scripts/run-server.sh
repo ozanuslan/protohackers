@@ -16,7 +16,7 @@ fi
 
 function usage() {
     cat <<USAGE
-Usage: $script_name [options] <challenge_name>
+Usage: $script_name [options] <problem>
 
 Options:
     -p, --port <port>   Port to run the server on          (default: $PORT)
@@ -39,8 +39,8 @@ while [[ $# -gt 0 ]]; do
         usage
         ;;
     *)
-        if [[ -z "${challenge_name-}" ]]; then
-            challenge_name="$1"
+        if [[ -z "${problem-}" ]]; then
+            problem="$1"
         else
             echo "Unknown argument: $1" >&2
             usage
@@ -50,18 +50,18 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-challenge_name="${challenge_name-}"
+problem="${problem-}"
 dev_mode="${dev_mode-false}"
 
-if [[ -z "${challenge_name-}" ]]; then
-    echo "Argument missing: <challenge_name>" >&2
+if [[ -z "${problem-}" ]]; then
+    echo "Argument missing: <problem>" >&2
     usage
 fi
 
-challenge_dir="$(realpath "$script_dir/../$challenge_name")"
+problem_dir="$(realpath "$script_dir/../problems/$problem")"
 
-if [[ ! -d "$challenge_dir" ]]; then
-    echo "Challenge directory does not exist: $challenge_dir" >&2
+if [[ ! -d "$problem_dir" ]]; then
+    echo "Challenge directory does not exist: $problem_dir" >&2
     exit 1
 fi
 
@@ -75,7 +75,7 @@ export IP="$bind_ip"
 export PORT
 
 if $dev_mode; then
-    cd "$challenge_dir"
+    cd "$problem_dir"
     echo "Running in development mode" >&2
     cat <<CONFIG >&2
 # Configuration
@@ -88,7 +88,7 @@ CONFIG
     go run .
     exit $?
 else
-    img_name="$("$script_dir/build-image.sh" "$challenge_name")"
+    img_name="$("$script_dir/build-image.sh" "$problem")"
     echo "Running challenge image: $img_name" >&2
     cat <<CONFIG >&2
 # Configuration
