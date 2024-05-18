@@ -71,25 +71,27 @@ fi
 export IP="$bind_ip"
 export PORT="$port"
 
-if $dev_mode; then
-    cd "$problem_dir"
-    echo "Running in development mode" >&2
-    cat <<CONFIG >&2
+cat <<CONFIG >&2
 # Configuration
-- PORT      : $PORT
+- IP   : $IP
+- PORT : $PORT
 CONFIG
-    version="$(go version)"
-    echo "Go version: $version" >&2
+
+if $dev_mode; then
+    if ! command -v go &>/dev/null; then
+        echo "Go is not installed" >&2
+        exit 1
+    fi
+    cd "$problem_dir"
+
+    echo "Running in development mode" >&2
+    echo "Go version: $(go version)" >&2
+
     go mod tidy
     go mod download
     go run .
-    exit $?
 else
     img_name="$("$script_dir/build-image.sh" "$problem")"
-    echo "Running challenge image: $img_name" >&2
-    cat <<CONFIG >&2
-# Configuration
-- PORT      : $PORT
-CONFIG
+    echo "Running problem image: $img_name" >&2
     docker run --rm -p "$IP:$PORT:$PORT" -e PORT="$PORT" "$img_name"
 fi
