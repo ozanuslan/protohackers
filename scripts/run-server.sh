@@ -33,7 +33,7 @@ problem_name_mapping=(
     "11:pest_control"
 )
 
-function problems() {
+function available_problems() {
     echo "Available problems:" >&2
     for mapping in "${problem_name_mapping[@]}"; do
         if [[ -d "$script_dir/../problems/${mapping#*:}" ]]; then
@@ -57,7 +57,7 @@ while [[ $# -gt 0 ]]; do
         shift
         ;;
     -l | --list)
-        problems
+        available_problems
         exit 0
         ;;
     -h | --help)
@@ -91,7 +91,7 @@ fi
 
 if [[ "$problem" =~ ^[0-9]+$ ]]; then
     echo "Invalid problem index: $problem" >&2
-    problems
+    available_problems
     exit 1
 fi
 
@@ -102,8 +102,8 @@ fi
 
 problem_dir="$(realpath "$script_dir/../problems/$problem")"
 if [[ ! -d "$problem_dir" ]]; then
-    echo "Problem dir not found: $problem" >&2
-    problems
+    echo "Problem has no directory: $problem" >&2
+    available_problems
     exit 1
 fi
 
