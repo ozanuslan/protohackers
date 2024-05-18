@@ -6,9 +6,8 @@ script_name="$(basename "$0")"
 script_dir="$(cd "$(dirname "$0")" && pwd)"
 
 function usage() {
-    cat <<USAGE
+    cat <<USAGE >&2
 Usage: $script_name [options] <problem>
-
 Options:
     -p, --port <port>   Port to run the server on          (default: 1337)
     -b, --bind <ip>     IP address to bind the server to   (default: 0.0.0.0)
