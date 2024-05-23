@@ -100,12 +100,13 @@ if [[ "$problem" =~ ^[0-9]+$ ]]; then
     exit 1
 fi
 
-problem_dir="$(realpath "$script_dir/../problems/$problem")"
+problem_dir="$script_dir/../problems/$problem"
 if [[ ! -d "$problem_dir" ]]; then
     echo "Problem has no directory: $problem" >&2
     available_problems
     exit 1
 fi
+problem_dir="$(realpath "$problem_dir")"
 
 export IP="$bind_ip"
 export PORT="$port"
@@ -115,6 +116,7 @@ cat <<CONFIG >&2
 - IP   : $IP
 - PORT : $PORT
 CONFIG
+echo "Running problem: $problem" >&2
 
 if $dev_mode; then
     if ! command -v go &>/dev/null; then
@@ -131,6 +133,6 @@ if $dev_mode; then
     go run .
 else
     img_name="$("$script_dir/build-image.sh" "$problem")"
-    echo "Running problem image: $img_name" >&2
+    echo "Running image: $img_name" >&2
     docker run --rm -p "$IP:$PORT:$PORT" -p "$IP:$PORT:$PORT/udp" -e PORT="$PORT" "$img_name"
 fi
