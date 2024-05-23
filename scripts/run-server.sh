@@ -132,5 +132,5 @@ if $dev_mode; then
 else
     img_name="$("$script_dir/build-image.sh" "$problem")"
     echo "Running problem image: $img_name" >&2
-    docker run --rm -p "$IP:$PORT:$PORT" -e PORT="$PORT" "$img_name"
+    docker run --rm -p "$IP:$PORT:$PORT" -p "$IP:$PORT:$PORT/udp" -e PORT="$PORT" "$img_name"
 fi

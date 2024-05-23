@@ -44,10 +44,10 @@ func handlePacket(addr string, payload []byte) {
 	log.Println(addr, "Received payload:", string(payload))
 	if string(payload) == "version" {
 		ver := "version=" + version
-		log.Println("Sending version:", ver)
+		log.Println(addr, "Sending version:", ver)
 		err := sendPacket(addr, []byte(ver))
 		if err != nil {
-			log.Println("Failed to send version:", err)
+			log.Println(addr, "Failed to send version:", err)
 		}
 		return
 	}
