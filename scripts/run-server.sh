@@ -57,7 +57,7 @@ while [[ $# -gt 0 ]]; do
         shift
         ;;
     -l | --list)
-        available_problems
+        available_problems 2>&1
         exit 0
         ;;
     -h | --help)
