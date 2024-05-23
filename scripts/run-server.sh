@@ -80,6 +80,11 @@ port="${port-1337}"
 bind_ip="${bind_ip-0.0.0.0}"
 dev_mode="${dev_mode-false}"
 
+if [[ -z "${problem-}" ]]; then
+    echo "Argument missing: <problem>" >&2
+    usage
+fi
+
 if [[ "$problem" =~ ^[0-9]+$ ]]; then
     for mapping in "${problem_name_mapping[@]}"; do
         if [[ "$problem" == "${mapping%%:*}" ]]; then
@@ -93,11 +98,6 @@ if [[ "$problem" =~ ^[0-9]+$ ]]; then
     echo "Invalid problem index: $problem" >&2
     available_problems
     exit 1
-fi
-
-if [[ -z "${problem-}" ]]; then
-    echo "Argument missing: <problem>" >&2
-    usage
 fi
 
 problem_dir="$(realpath "$script_dir/../problems/$problem")"
