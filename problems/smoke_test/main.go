@@ -37,7 +37,7 @@ func handleConn(c net.Conn) {
 	if err != nil {
 		log.Fatalln(remote, "Error while reading connection:", err)
 	}
-	log.Println(remote, "Read:", string(buf))
+	log.Println(remote, "Read msg of len:", len(buf))
 
 	_, err = c.Write(buf)
 	if err != nil {
