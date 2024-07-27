@@ -38,7 +38,7 @@ func handleConn(c net.Conn) {
 
 	defer func() {
 		log.Println(remoteStr, "Closing connection")
-		defer c.Close()
+		c.Close()
 	}()
 	log.Println(remoteStr, "Accepted connection")
 

@@ -42,7 +42,7 @@ func handleConn(conn net.Conn) {
 	remoteStr := "[" + conn.RemoteAddr().String() + "]"
 	defer func() {
 		log.Println(remoteStr, "Closing connection")
-		defer conn.Close()
+		conn.Close()
 	}()
 	log.Println(remoteStr, "Accepted connection")
 

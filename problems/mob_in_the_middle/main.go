@@ -47,7 +47,7 @@ func handleConn(clientConn net.Conn) {
 	log.Println(clientAddr, "Accepted connection")
 	defer func() {
 		log.Println(clientAddr, "Closing connection")
-		defer clientConn.Close()
+		clientConn.Close()
 	}()
 
 	serverConn, err := net.Dial("tcp", upstreamServerAddr)
