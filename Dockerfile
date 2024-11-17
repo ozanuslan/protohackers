@@ -1,8 +1,9 @@
 # syntax=docker/dockerfile:1
 
-ARG ALPINE_BASE=3.19
+ARG ALPINE_VERSION=3.19
+ARG GO_VERSION=1.22.3
 
-FROM docker.io/library/golang:1.22.3-alpine${ALPINE_BASE} as builder
+FROM docker.io/library/golang:${GO_VERSION}-alpine${ALPINE_VERSION} as builder
 LABEL auto_prune="true"
 
 WORKDIR /build
@@ -11,7 +12,7 @@ COPY . .
 RUN go mod download
 RUN go build -o server .
 
-FROM docker.io/library/alpine:${ALPINE_BASE}
+FROM docker.io/library/alpine:${ALPINE_VERSION}
 
 WORKDIR /
 COPY --from=builder /build/server /server
