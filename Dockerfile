@@ -3,7 +3,7 @@
 ARG ALPINE_VERSION=3.19
 ARG GO_VERSION=1.22.3
 
-FROM docker.io/library/golang:${GO_VERSION}-alpine${ALPINE_VERSION} as builder
+FROM docker.io/library/golang:${GO_VERSION}-alpine${ALPINE_VERSION} AS builder
 LABEL auto_prune="true"
 
 WORKDIR /build
